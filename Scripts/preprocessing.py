@@ -26,7 +26,7 @@ def data_loading(train_data_path, test_data_path):
 def features_selection(X, test_data):
     # These features were selected based on data visualization and mutual information score (see EDA notebook)
     features_to_keep = ['OverallQual', 'Neighborhood', 'GrLivArea', 'YearBuilt', 'GarageArea', 'TotalBsmtSF', 'FullBath',
-                         'YearRemodAdd', '2ndFlrSF', 'Foundation', 'Exterior2nd', 'LotArea', 'Fireplaces', 'OpenPorchSF', 'Exterior1st']
+                         'YearRemodAdd', '2ndFlrSF', 'Foundation', 'Exterior2nd', 'LotArea', 'Fireplaces', 'OpenPorchSF']
     X = X[features_to_keep]
     test_data = test_data[features_to_keep]
     return X, test_data
@@ -41,7 +41,7 @@ def missing_processing(test_data):    # Only test data will be processing, becau
     num_cols = ['TotalBsmtSF', 'GarageArea', '2ndFlrSF', 'TotalBsmtSF', 'LotArea', 'OpenPorchSF']
 
     cat_cols = ['OverallQual', 'Neighborhood', 'YearBuilt', 'FullBath',
-                             'YearRemodAdd', 'Foundation', 'Exterior2nd', 'Fireplaces', 'Exterior1st']
+                             'YearRemodAdd', 'Foundation', 'Exterior2nd', 'Fireplaces']
 
     # Create imputer objects
     num_imputer = SimpleImputer(strategy = 'median')
@@ -82,7 +82,7 @@ def outliers_excluding(X, y):
 
     # Create a list of categorical variables
     cat_cols = ['OverallQual', 'Neighborhood', 'YearBuilt', 'FullBath',
-                'YearRemodAdd', 'Foundation', 'Exterior2nd', 'Fireplaces', 'Exterior1st']
+                'YearRemodAdd', 'Foundation', 'Exterior2nd', 'Fireplaces']
 
     # Run through every categoty of every categorical feature
     for col in cat_cols:
@@ -124,7 +124,7 @@ def outliers_excluding(X, y):
 # Categorical Encoding
 def categorical_encoding(X, test_data):
     # List of columns that have to be encoded
-    cat_cols_to_encode = ['Neighborhood', 'Foundation', 'Exterior2nd', 'Exterior1st']
+    cat_cols_to_encode = ['Neighborhood', 'Foundation', 'Exterior2nd']
 
     # Apply one-hot encoder to each column with categorical data
     OH_encoder = OneHotEncoder(handle_unknown='ignore', sparse_output=False)
@@ -187,19 +187,12 @@ def save_normalized_data(X, y, test_data):
 
 
 def full_preprocessing(train_data_path, test_data_path):
-
     X, y, test_data = data_loading(train_data_path, test_data_path)
-
     X, test_data = features_selection(X, test_data)
-
     test_data = missing_processing(test_data)
-
     X, y = outliers_excluding(X, y)
-
     X, test_data = categorical_encoding(X, test_data)
-
     save_processed_data(X, y, test_data)
-
     save_normalized_data(X, y, test_data)
 
 
