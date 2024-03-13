@@ -11,6 +11,9 @@
 #                                           * XGBoost Regressor.
 #   - saving models trained on data processed in EDA notebook
 
+# Set aliases
+import pandas as pd
+import numpy as np
 
 # Load the processed data
 def load_processed_data(processed_data_path):
@@ -25,19 +28,26 @@ def load_processed_data(processed_data_path):
 
 # My metric for cross validation
 def rmse_log(model, X, y):
+    from sklearn.metrics import mean_squared_error
+
     y_pred = model.predict(X)
     return np.sqrt(mean_squared_error(np.log1p(y), np.log1p(y_pred)))
 
 # My metric for GridSearch
 def rmse_log_for_gridsearch(y_true, y_pred):
+    from sklearn.metrics import mean_squared_error
+
     return np.sqrt(mean_squared_error(np.log(y_true), np.log(y_pred)))
 
+from sklearn.metrics import make_scorer
 custom_scorer = make_scorer(rmse_log_for_gridsearch, greater_is_better=False)
 
 
 # Linear Regression
 def linear_regression_fit(X, y, rmse_log):
-    
+    from sklearn.linear_model import LinearRegression
+    from sklearn.model_selection import cross_val_score
+
     linear_regression = LinearRegression()
 
     # Get cross-validation score
@@ -55,6 +65,9 @@ def linear_regression_fit(X, y, rmse_log):
 # Ridge Regression
 # All default parameter values were found by experimentation in the FittingAndEvaluation notebook
 def ridge_regression_tune_fit(X, y, custom_scorer, alpha = [2,641]):
+    from sklearn.linear_model import Ridge
+    from sklearn.model_selection import GridSearchCV
+
     # Create a model sample
     ridge_sample = Ridge()
 
@@ -80,6 +93,11 @@ def ridge_regression_tune_fit(X, y, custom_scorer, alpha = [2,641]):
 # Lasso Regression 
 # All default parameter values were found by experimentation in the FittingAndEvaluation notebook
 def lasso_regression_tune_fit(X, y, custom_scorer, alpha = [41]):
+    from sklearn.linear_model import Lasso
+    import warnings
+    from sklearn.exceptions import ConvergenceWarning
+    from sklearn.model_selection import GridSearchCV
+
     # I don't want to overload the output of the Lasso regression
     warnings.filterwarnings("ignore", category=ConvergenceWarning)
 
@@ -107,6 +125,11 @@ def lasso_regression_tune_fit(X, y, custom_scorer, alpha = [41]):
 # Elastic Net  
 # All default parameter values were found by experimentation in the FittingAndEvaluation notebook
 def elastic_net_tune_fit(X, y, custom_scorer, alpha = [41], l1_ratio = [1]):
+    from sklearn.linear_model import ElasticNet
+    import warnings
+    from sklearn.exceptions import ConvergenceWarning
+    from sklearn.model_selection import GridSearchCV
+
     # I don't want to overload the output of the Elastic Net
     warnings.filterwarnings("ignore", category=ConvergenceWarning)
     
@@ -135,6 +158,9 @@ def elastic_net_tune_fit(X, y, custom_scorer, alpha = [41], l1_ratio = [1]):
 # All default parameter values were found by experimentation in the FittingAndEvaluation notebook
 def decision_tree_tune_fit(X, y, custom_scorer, max_depth = [6], min_samples_split = [2], min_samples_leaf = [6], max_features = [35], 
                            min_impurity_decrease = [0], ccp_alpha = [0]):
+    from sklearn.tree import DecisionTreeRegressor
+    from sklearn.model_selection import GridSearchCV
+
     # Create a model sample
     decision_tree_sample = DecisionTreeRegressor()
 
@@ -168,6 +194,9 @@ def decision_tree_tune_fit(X, y, custom_scorer, max_depth = [6], min_samples_spl
 # All default parameter values were found by experimentation in the FittingAndEvaluation notebook 
 def random_forest_tune_fit(X, y, custom_scorer, n_estimators = [1150], max_depth = [27], min_samples_split = [3], 
                            min_samples_leaf = [1], max_features = [12]):
+    from sklearn.ensemble import RandomForestRegressor
+    from sklearn.model_selection import GridSearchCV
+
     # Create a model sample
     random_forest_sample = RandomForestRegressor()
 
@@ -201,6 +230,10 @@ def random_forest_tune_fit(X, y, custom_scorer, n_estimators = [1150], max_depth
 # All default parameter values were found by experimentation in the FittingAndEvaluation notebook
 def xgboost_tune_fit(X, y, custom_scorer, max_depth = [3], min_child_weight = [7], gamma = [0], subsample = [1], colsample_bytree = [1],
                      reg_alpha = [0], reg_lambda = [1]):
+    from xgboost import XGBRegressor
+    from sklearn.model_selection import GridSearchCV
+    from sklearn.model_selection import train_test_split
+
     # Split the data to use eval_set in selecting the best values for n_estimators and learning_rate
     X_train, X_valid, y_train, y_valid = train_test_split(X, y, test_size = 0.2, random_state = 0)
 
@@ -252,6 +285,8 @@ def xgboost_tune_fit(X, y, custom_scorer, max_depth = [3], min_child_weight = [7
 
 # Save models
 def save_models(X, y, rmse_log, custom_scorer):
+    import pickle
+
     # Create a list for storing models
     models = []
 
