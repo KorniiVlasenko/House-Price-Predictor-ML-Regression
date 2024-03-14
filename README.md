@@ -12,7 +12,7 @@ The data was taken from the Kaggle database [data](https://www.kaggle.com/compet
 
 The goal of the project is to go through the entire cycle of a machine learning project from data collection to creating a program ready to predict house prices using the new data.
 
-### Table of Contents  
+### Table of Contents<a name = 'content'></a>     
 
 - [Development](#developmnt)    
 - [Usage](#usage)      
@@ -20,6 +20,7 @@ The goal of the project is to go through the entire cycle of a machine learning 
    
     
 ### Development<a name = 'development'></a>   
+[Table of Contents](#content)     
 
 To install all required dependencies, run the `requirements.txt` file from the root directory of the project:    
 
@@ -30,7 +31,8 @@ To build a project run the following command while in the root directory:
 > python Scripts/make_project.py
 
 
-### Usage<a name = 'usage'></a>  
+### Usage<a name = 'usage'></a>     
+[Table of Contents](#content)     
 
 If you are that lucky guy who has real estate in Ames, Iowa, and you want to find out its value, you can do it as follows:    
 
@@ -42,7 +44,8 @@ If you are that lucky guy who has real estate in Ames, Iowa, and you want to fin
 3. Look up the value of your properties in the **price_of_your_property** file that will appear afterwards.
 
 
-### Project Navigation<a name = 'navigation'></a>   
+### Project Navigation<a name = 'navigation'></a>      
+[Table of Contents](#content)     
 
 The easiest to grasp part of the project is in the **Notebooks** folder. This folder contains Jupyter Notebooks with a lot of comments, deliberations and code explanations.    
 
