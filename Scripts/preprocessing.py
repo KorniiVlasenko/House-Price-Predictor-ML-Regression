@@ -8,8 +8,14 @@
 #   - saving different data variants for model selection (see more in the TryDifferentData notebook)
 
 
+
+# Set aliases
+import pandas as pd
+import numpy as np
+
 # Data Loading
-def data_loading(train_data_path, test_data_path):
+def data_loading(train_data_path = '../Data/train_origin.csv', 
+                 test_data_path = '../Data/test_origin.csv'):
     # load data fron .csv files
     train_data = pd.read_csv(train_data_path, index_col = 'Id')
     test_data = pd.read_csv(test_data_path, index_col = 'Id')
@@ -36,6 +42,8 @@ def features_selection(X, test_data):
 def missing_processing(test_data):    # Only test data will be processing, because train data doesn't have missing data in selected rows
     # The specifics of my test data and its evaluation do not allow me to throw out rows, 
     # so any missing data will be filled in. (see more in EDA notebook)
+
+    from sklearn.impute import SimpleImputer
 
     # Get numerical and categorical features into separate variables
     num_cols = ['TotalBsmtSF', 'GarageArea', '2ndFlrSF', 'TotalBsmtSF', 'LotArea', 'OpenPorchSF']
@@ -123,6 +131,8 @@ def outliers_excluding(X, y):
 
 # Categorical Encoding
 def categorical_encoding(X, test_data):
+    from sklearn.preprocessing import OneHotEncoder
+
     # List of columns that have to be encoded
     cat_cols_to_encode = ['Neighborhood', 'Foundation', 'Exterior2nd']
 
@@ -154,17 +164,17 @@ def categorical_encoding(X, test_data):
     X_encoded.columns = X_encoded.columns.astype(str)
     test_data_encoded.columns = test_data_encoded.columns.astype(str)
     
-    return X, test_data
+    return X_encoded, test_data_encoded
 
 
 # Save train / test data 
 def save_processed_data(X, y, test_data):
     # Save train data
     train_data_processed = pd.concat([X, y.rename('SalePrice')], axis = 1)
-    train_data_processed.to_csv('train_data_processed.csv')
+    train_data_processed.to_csv('../Data/train_data_processed.csv')
 
     # Save test data
-    test_data.to_csv('test_data_processed.csv')
+    test_data.to_csv('../Data/test_data_processed.csv')
 
 
 # Save normalized data
@@ -182,11 +192,12 @@ def save_normalized_data(X, y, test_data):
     test_data.loc[test_data['TotalBsmtSF'] > 0, 'TotalBsmtSF'] = np.log(test_data['TotalBsmtSF'])
 
     # Saving normalized data
-    train_data_stats.to_csv('train_data_stats.csv')
-    test_data.to_csv('test_data_stats.csv')
+    train_data_stats.to_csv('../Data/train_data_stats.csv')
+    test_data.to_csv('../Data/test_data_stats.csv')
 
 
-def full_preprocessing(train_data_path, test_data_path):
+def full_preprocessing(train_data_path = '../Data/train_origin.csv', 
+                       test_data_path = '../Data/test_origin.csv'):
     X, y, test_data = data_loading(train_data_path, test_data_path)
     X, test_data = features_selection(X, test_data)
     test_data = missing_processing(test_data)

@@ -1,20 +1,27 @@
-# Houses Price Predictor    
+# Predicting of House Prices    
 
 
-In this project I will apply Pipelines for data preprocessing. This is a purely learning project.    
+The project solves a regression problem - predicting house prices. 
+
+It is built using pandas, numpy, scikit-learn and xgboost libraries.    
+
+The data was taken from the Kaggle database [Kaggle](https://www.kaggle.com/competitions/house-prices-advanced-regression-techniques/data)  
 
 
-The data was taken from the Kaggle database [kaggle.com](https://www.kaggle.com/)  
+### Goal of this project
 
-### Problem statement  
+The goal of the project is to go through the entire cycle of a machine learning project from data collection to creating a program ready to predict house prices using the new data.
 
-> to determine the price of house   
+### Table of Contents  
+
+- [Development]
+- [Usage]
+- [Project Structure]
+   
     
-### Goals of this project   
+### Development   
 
-* Practice EDA: Data Loading, Data Familiarization, Data Visualization;   
-* Practice Preprocessing using Pipelines;  
-* Practice Model Evaluation using Cross-Validation.   
+To install all required dependencies, run the `requirements.txt` file from the root directory of the project.   
 
 ### Steps   
 

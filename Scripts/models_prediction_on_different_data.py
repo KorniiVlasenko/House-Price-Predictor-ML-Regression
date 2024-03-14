@@ -22,7 +22,8 @@ def load_models():
 
 
 # Load processed data (train and test)
-def load_processed_data(train_processed_path, test_processed_path):
+def load_processed_data(train_processed_path = '../Data/train_data_processed.csv', 
+                        test_processed_path = '../Data/test_data_processed.csv'):
     # load and split train data
     train_data = pd.read_csv(train_processed_path, index_col = 'Id')
     X_processed = train_data.copy()
@@ -84,7 +85,8 @@ def get_prediction_diff_num_of_features(X_processed, y, test_data_processed, mod
         
 
 # Load normalized data
-def load_data_normalized(train_normalized_path, test_normalized_path):
+def load_data_normalized(train_normalized_path = '../Data/train_data_stats.csv',
+                         test_normalized_path = '../Data/test_data_stats.csv'):
     train_data_norm = pd.read_csv(train_normalized_path, index_col = 'Id')
     test_data_norm = pd.read_csv(test_normalized_path, index_col = 'Id')
 
@@ -158,11 +160,11 @@ def get_prediction_scaled(X_processed, y, test_data_processed, models):
 
 
 # Get all prediction files by calling a single function
-def get_all_predictions(train_processed_path, test_processed_path, train_normalized_path, test_normalized_path):
+def get_all_predictions():
     models = load_models()
-    X_processed, y, test_data_processed = load_processed_data(train_processed_path, test_processed_path)
+    X_processed, y, test_data_processed = load_processed_data()
     get_prediction_processed(X_processed, y, test_data_processed, models)
     get_prediction_diff_num_of_features(X_processed, y, test_data_processed, models)
-    X_norm, y_norm, test_data_norm = load_data_normalized(train_normalized_path, test_normalized_path)
+    X_norm, y_norm, test_data_norm = load_data_normalized()
     get_prediction_normalized(X_norm, y_norm, test_data_norm, models)
     get_prediction_scaled(X_processed, y, test_data_processed, models)

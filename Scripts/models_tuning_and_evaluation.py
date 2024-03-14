@@ -16,7 +16,7 @@ import pandas as pd
 import numpy as np
 
 # Load the processed data
-def load_processed_data(processed_data_path):
+def load_processed_data(processed_data_path = '../Data/train_data_processed.csv'):
     data = pd.read_csv(processed_data_path, index_col = 'Id')
     X = data.copy()  
     y = X['SalePrice']
@@ -37,14 +37,14 @@ def rmse_log(model, X, y):
 def rmse_log_for_gridsearch(y_true, y_pred):
     from sklearn.metrics import mean_squared_error
 
-    return np.sqrt(mean_squared_error(np.log(y_true), np.log(y_pred)))
+    return np.sqrt(mean_squared_error(np.log1p(y_true), np.log1p(y_pred)))
 
 from sklearn.metrics import make_scorer
 custom_scorer = make_scorer(rmse_log_for_gridsearch, greater_is_better=False)
 
 
 # Linear Regression
-def linear_regression_fit(X, y, rmse_log):
+def linear_regression_fit(X, y):
     from sklearn.linear_model import LinearRegression
     from sklearn.model_selection import cross_val_score
 
@@ -57,14 +57,14 @@ def linear_regression_fit(X, y, rmse_log):
                             cv = 5,
                             scoring = rmse_log)
 
-    print(linear_regression_scores.mean())
+    print('Linear Regression score: ', linear_regression_scores.mean())
     
     return linear_regression
 
 
 # Ridge Regression
 # All default parameter values were found by experimentation in the FittingAndEvaluation notebook
-def ridge_regression_tune_fit(X, y, custom_scorer, alpha = [2,641]):
+def ridge_regression_tune_fit(X, y, alpha = [2.641]):
     from sklearn.linear_model import Ridge
     from sklearn.model_selection import GridSearchCV
 
@@ -79,8 +79,8 @@ def ridge_regression_tune_fit(X, y, custom_scorer, alpha = [2,641]):
     ridge_regression.fit(X, y)
 
     # Print best parameters and best score
-    print('Best value of λ: ', ridge_regression.best_params_)
-    print('Best score: ', ridge_regression.best_score_)
+    print('Ridge Regression, best value of λ: ', ridge_regression.best_params_)
+    print('Best score: ', -1 * ridge_regression.best_score_)
 
     # Give model best parameters
     ridge_best_params = ridge_regression.best_params_
@@ -92,7 +92,7 @@ def ridge_regression_tune_fit(X, y, custom_scorer, alpha = [2,641]):
 
 # Lasso Regression 
 # All default parameter values were found by experimentation in the FittingAndEvaluation notebook
-def lasso_regression_tune_fit(X, y, custom_scorer, alpha = [41]):
+def lasso_regression_tune_fit(X, y, alpha = [41]):
     from sklearn.linear_model import Lasso
     import warnings
     from sklearn.exceptions import ConvergenceWarning
@@ -112,8 +112,8 @@ def lasso_regression_tune_fit(X, y, custom_scorer, alpha = [41]):
     lasso_regression.fit(X, y)
 
     # Print best parameters and best score
-    print('best alpha: ', lasso_regression.best_params_)
-    print('score: ', lasso_regression.best_score_)
+    print('Lasso Regression, best value of alpha: ', lasso_regression.best_params_)
+    print('Best score: ', -1 * lasso_regression.best_score_)
 
     # Give model best parameters
     lasso_best_params = lasso_regression.best_params_
@@ -124,7 +124,7 @@ def lasso_regression_tune_fit(X, y, custom_scorer, alpha = [41]):
 
 # Elastic Net  
 # All default parameter values were found by experimentation in the FittingAndEvaluation notebook
-def elastic_net_tune_fit(X, y, custom_scorer, alpha = [41], l1_ratio = [1]):
+def elastic_net_tune_fit(X, y, alpha = [41], l1_ratio = [1]):
     from sklearn.linear_model import ElasticNet
     import warnings
     from sklearn.exceptions import ConvergenceWarning
@@ -144,8 +144,8 @@ def elastic_net_tune_fit(X, y, custom_scorer, alpha = [41], l1_ratio = [1]):
     elastic_net.fit(X, y)
 
     # Print best parameters and best score
-    print('best alpha and l1_ratio: ', elastic_net.best_params_)
-    print('score: ', elastic_net.best_score_)
+    print('Elastic Net, best alpha and l1_ratio: ', elastic_net.best_params_)
+    print('Best score: ', -1 * elastic_net.best_score_)
 
     # Give model best parameters
     elnet_best_params = elastic_net.best_params_
@@ -156,7 +156,7 @@ def elastic_net_tune_fit(X, y, custom_scorer, alpha = [41], l1_ratio = [1]):
 
 # DecisionTree   
 # All default parameter values were found by experimentation in the FittingAndEvaluation notebook
-def decision_tree_tune_fit(X, y, custom_scorer, max_depth = [6], min_samples_split = [2], min_samples_leaf = [6], max_features = [35], 
+def decision_tree_tune_fit(X, y, max_depth = [6], min_samples_split = [2], min_samples_leaf = [6], max_features = [35], 
                            min_impurity_decrease = [0], ccp_alpha = [0]):
     from sklearn.tree import DecisionTreeRegressor
     from sklearn.model_selection import GridSearchCV
@@ -180,8 +180,8 @@ def decision_tree_tune_fit(X, y, custom_scorer, max_depth = [6], min_samples_spl
     decision_tree_regressor.fit(X, y)
 
     # Print best parameters and best score
-    print('Best DT params: ', decision_tree_regressor.best_params_)
-    print('Best score: ', decision_tree_regressor.best_score_)
+    print('Decision Tree, best parameters: ', decision_tree_regressor.best_params_)
+    print('Best score: ', -1 * decision_tree_regressor.best_score_)
 
     # Give model best parameters
     decision_tree_best_params = decision_tree_regressor.best_params_
@@ -192,7 +192,7 @@ def decision_tree_tune_fit(X, y, custom_scorer, max_depth = [6], min_samples_spl
 
 # Random Forest  
 # All default parameter values were found by experimentation in the FittingAndEvaluation notebook 
-def random_forest_tune_fit(X, y, custom_scorer, n_estimators = [1150], max_depth = [27], min_samples_split = [3], 
+def random_forest_tune_fit(X, y, n_estimators = [1150], max_depth = [27], min_samples_split = [3], 
                            min_samples_leaf = [1], max_features = [12]):
     from sklearn.ensemble import RandomForestRegressor
     from sklearn.model_selection import GridSearchCV
@@ -216,8 +216,8 @@ def random_forest_tune_fit(X, y, custom_scorer, n_estimators = [1150], max_depth
     random_forest_regressor.fit(X, y)
 
     # Print best parameters and best score
-    print('Best parameters: ', random_forest_regressor.best_params_)
-    print('Best score: ', random_forest_regressor.best_score_)
+    print('Random Forest, best parameters: ', random_forest_regressor.best_params_)
+    print('Best score: ', -1 * random_forest_regressor.best_score_)
 
     # Give model best parameters
     random_forest_best_params = random_forest_regressor.best_params_
@@ -228,7 +228,7 @@ def random_forest_tune_fit(X, y, custom_scorer, n_estimators = [1150], max_depth
 
 # Extreme Gradient Boosting  
 # All default parameter values were found by experimentation in the FittingAndEvaluation notebook
-def xgboost_tune_fit(X, y, custom_scorer, max_depth = [3], min_child_weight = [7], gamma = [0], subsample = [1], colsample_bytree = [1],
+def xgboost_tune_fit(X, y, max_depth = [3], min_child_weight = [7], gamma = [0], subsample = [1], colsample_bytree = [1],
                      reg_alpha = [0], reg_lambda = [1]):
     from xgboost import XGBRegressor
     from sklearn.model_selection import GridSearchCV
@@ -245,7 +245,7 @@ def xgboost_tune_fit(X, y, custom_scorer, max_depth = [3], min_child_weight = [7
                     eval_set = [(X_valid, y_valid)],
                     verbose = False)
 
-    print("Best value for n_estimators: ", xgb_regressor_presearch.best_iteration)
+    print("XGBoost, best value for n_estimators: ", xgb_regressor_presearch.best_iteration)
 
     # Create features for best iteretion and best learning rate
     xgb_best_iteration = xgb_regressor_presearch.best_iteration
@@ -271,8 +271,8 @@ def xgboost_tune_fit(X, y, custom_scorer, max_depth = [3], min_child_weight = [7
     xgb_regressor.fit(X, y)
 
     # Give model best parameters
-    print('Best parameters: ', xgb_regressor.best_params_)
-    print('Best score: ', xgb_regressor.best_score_)
+    print('XGBoost, best parameters: ', xgb_regressor.best_params_)
+    print('Best score: ', -1 * xgb_regressor.best_score_)
 
     # Give model best parameters
     xgb_best_params = xgb_regressor.best_params_
@@ -284,19 +284,21 @@ def xgboost_tune_fit(X, y, custom_scorer, max_depth = [3], min_child_weight = [7
 
 
 # Save models
-def save_models(X, y, rmse_log, custom_scorer):
+def save_tuned_models():
     import pickle
+
+    X, y = load_processed_data()
 
     # Create a list for storing models
     models = []
 
     # Add linear regression
-    models.append(linear_regression_fit(X, y, rmse_log))
+    models.append(linear_regression_fit(X, y))
 
     # Add other models. (I exclude elastic net, because in my case it's equal to lasso regression)
     for function in (ridge_regression_tune_fit, lasso_regression_tune_fit, decision_tree_tune_fit,
                 random_forest_tune_fit, xgboost_tune_fit):
-        new_model = function(X, y, custom_scorer)
+        new_model = function(X, y)
         models.append(new_model)
     
     # Check that right hyper parameters were saved
@@ -308,4 +310,7 @@ def save_models(X, y, rmse_log, custom_scorer):
     
     return models
     
-    
+
+
+
+
