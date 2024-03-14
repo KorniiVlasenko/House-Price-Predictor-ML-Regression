@@ -10,7 +10,7 @@ The data was taken from the Kaggle database [data](https://www.kaggle.com/compet
 
 ### Goal of this project
 
-The goal of the project is to go through the entire cycle of a machine learning project from data collection to creating a program ready to predict house prices using the new data.
+The goal is to go through the entire cycle of a machine learning project from data collection to creating a program ready to predict house prices using the new data. In particular improving skills in EDA, model selection and tuning, scripts writing, creative thinking in problem solving.
 
 ### Table of Contents<a name = 'content'></a>     
 
