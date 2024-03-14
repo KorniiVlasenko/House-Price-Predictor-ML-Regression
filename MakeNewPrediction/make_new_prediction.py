@@ -66,13 +66,19 @@ def new_prediction(X_scaled, y, new_data_scaled, best_model):
     # fit / predict
     best_model.fit(X_scaled, y)
     prediction = best_model.predict(new_data_scaled)
-        
+    
+    # Round prediction to two decimal places
+    rounded_prediction = np.round(prediction, 2)
+    
+    # Add dollar sign to rounded prediction
+    formatted_prediction = ['$' + str(p) for p in rounded_prediction]
+
     # Get prediction name
     prediction_name = 'price_of_your_property.csv'
         
     # Fit prediction to the submission format and save .csv
     prediction_dataframe = pd.DataFrame({'Id': [i for i in range(1, len(new_data_scaled) + 1)], 
-                                         'SalePrice': prediction})
+                                         'SalePrice': formatted_prediction})
     prediction_dataframe.to_csv(f"{prediction_name}", index = False)
 
 
