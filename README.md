@@ -10,7 +10,7 @@ The data was taken from the Kaggle database [data](https://www.kaggle.com/compet
 
 ### Goal of this project
 
-The goal is to go through the entire cycle of a machine learning project from data collection to creating a program ready to predict house prices using the new data. In particular improving skills in EDA, model selection and tuning, scripts writing, creative thinking in problem solving.
+The purpose of this project is educational. Specifically, I aimed to improve skills in areas such as: EDA, model selection and tuning, scripts writing, creative thinking in problem solving.       
 
 ### Table of Contents<a name = 'content'></a>     
 
@@ -24,7 +24,7 @@ The goal is to go through the entire cycle of a machine learning project from da
 
 To install all required dependencies, run the `requirements.txt` file from the root directory of the project:    
 
-> pip install -r reqirements.txt
+> pip install -r requirements.txt
 
 To build a project run the following command while in the root directory:    
 
@@ -36,7 +36,7 @@ To build a project run the following command while in the root directory:
 
 If you are that lucky guy who has real estate in Ames, Iowa, and you want to find out its value, you can do it as follows:    
 
-1. In the MakeNewPrediction folder, write your property information into a *make_prediction* file similar to *make_prediction_example*.
+1. In the MakeNewPrediction folder, write your property information into a *make_prediction* file similar to *make_prediction_example*. You can take inspiration for feature values from the *Domuntetion/data_description.txt* file.
 
 2. In the same folder, run the command:
 > python make_new_prediction
